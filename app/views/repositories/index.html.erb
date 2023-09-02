@@ -1,0 +1,13 @@
+<%= form_with url: search_path, method: :get, local: true do |form| %>
+  <%= form.text_field :search_term, placeholder: "Search GitHub Repositories" %>
+  <%= form.submit "Search" %>
+<% end %>
+
+<% if @repositories %>
+  <h2>Search Results:</h2>
+  <ul>
+    <% @repositories.each do |repo| %>
+      <li><%= link_to repo.full_name, repo.html_url %></li>
+    <% end %>
+  </ul>
+<% end %>

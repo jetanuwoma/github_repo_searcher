@@ -6,8 +6,10 @@ class GithubService
   end
 
   def search_repositories
-    results = @client.search_repositories(@search_term, page: @page)
-    Kaminari.paginate_array(results.items, total_count: results.total_count).page(@page).per(30)
+    Rails.cache.fetch(["github-repo", @search_term, @page], expires_in: 1.hour) do
+      results = @client.search_repositories(@search_term, page: @page)
+      Kaminari.paginate_array(results.items, total_count: results.total_count).page(@page).per(30)
+    end
   end
 
   def self.search_repositories(search_term, page=1)
